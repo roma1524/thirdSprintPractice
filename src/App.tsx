@@ -3,6 +3,7 @@ import {useState} from 'react';
 import './App.css';
 import {Todolist} from './Todolist';
 import {v1} from 'uuid';
+import {CreateItemForm} from "@/CreateItemForm.tsx";
 
 export type FilterValuesType = "All" | "Active" | "Completed";
 export type TodolistsType = {
@@ -77,8 +78,20 @@ function App() {
         setTasks({...tasks,  [payload.todolistId]: tasks[payload.todolistId].map(el => el.id === payload.taskId ? {...el, title: payload.title} : el)})
     }
 
+    function createTodolistItem (title: string) {
+        let newTodolistId = v1();
+        const newTodolist : TodolistsType = {id: newTodolistId, title, filter: 'All'}
+        setTodoLists([newTodolist, ...todoLists])
+        setTasks({...tasks, [newTodolistId]: []})
+    }
+
     return (
         <div className="App">
+
+            <div>
+                <CreateItemForm createItem={createTodolistItem}/>
+            </div>
+
             {todoLists.map((el) => {
                 let tasksForTodolist = tasks[el.id];
                 if (el.filter === "Active") {

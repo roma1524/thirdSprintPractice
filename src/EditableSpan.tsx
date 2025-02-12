@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {ChangeEvent, useState} from "react";
 
 type Props = {
     title: string
@@ -17,7 +17,7 @@ export const EditableSpan = (props: Props) => {
         props.callback(title)
     }
 
-    const onVhangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onVhangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
     }
 
