@@ -22,6 +22,26 @@ export type TasksStateType = {
 
 function App() {
 
+   /* const [todoLists, setTodoLists] = useState<TodoListType[]>([
+        {id: todoListId1, title: 'What to learn', filter: 'All'},
+        {id: todoListId2, title: 'What to buy', filter: 'All'}
+    ]);
+
+
+    const [tasks, setTasks] = useState<TasksObjPropsType>({
+        [todoListId1]: [
+            {id: v1(), title: 'CSS', isDone: false},
+            {id: v1(), title: 'JS', isDone: true},
+            {id: v1(), title: 'React', isDone: false},
+            {id: v1(), title: 'Redux', isDone: false}
+        ],
+        [todoListId2]: [
+            {id: v1(), title: 'Milk', isDone: false},
+            {id: v1(), title: 'Beer', isDone: false},
+            {id: v1(), title: 'Onion', isDone: false}
+        ],
+    })*/
+
     let todolistId1 = v1();
     let todolistId2 = v1();
 
@@ -47,22 +67,38 @@ function App() {
         }
     });
 
-    const removeTodolist = (todolistId: string) => {
-
+    const removeTodolist = (payload: { todolistId: string }) => {
+        setTodolists(todolists.filter(el => el.id !== payload.todolistId))
+        delete tasks[payload.todolistId]
+        setTasks({...tasks})
     }
 
-    function removeTask(todolistId: string, taskId: string) {
+    function removeTask(payload: { todolistId: string, taskId: string }) {
+        setTasks({
+            ...tasks,
+            [payload.todolistId]: {
+                ...tasks[payload.todolistId],
+                data: tasks[payload.todolistId].data.filter(el => el.id !== payload.taskId)
+            }
+        })
     }
 
-    function addTask(todolistId: string, title: string) {
+    function addTask(payload: { todolistId: string, title: string }) {
 
+        const newItem = {id: v1(), title: payload.title, isDone: false}
+
+        setTasks({
+            ...tasks,
+            [payload.todolistId]: {...tasks[payload.todolistId], data: [...tasks[payload.todolistId].data, newItem]}
+        })
     }
 
-    function changeStatus(todolistId: string, taskId: string, newIsDone: boolean) {
-
+    function changeStatus(payload: { todolistId: string, taskId: string, newIsDone: boolean }) {
+        setTasks({...tasks, [payload.todolistId]: {...tasks[payload.todolistId], data: tasks[payload.todolistId].data.map(el => el.id === payload.taskId ? {...el, isDone: payload.newIsDone} : el)}})
     }
 
-    function changeFilter(todolistId: string, filter: FilterValuesType) {
+    function changeFilter(payload: {todolistId: string, filter: FilterValuesType}) {
+        setTasks({...tasks, [payload.todolistId]: {...tasks[payload.todolistId], filter: payload.filter}})
     }
 
     return (
