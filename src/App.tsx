@@ -4,16 +4,16 @@ import {Todolist} from './Todolist';
 import {v1} from 'uuid';
 
 export type FilterValuesType = "all" | "active" | "completed";
-type TodolistsType = {
+export type TodolistsType = {
     id: string
     title: string
 }
-type TasksType = {
+export type TasksType = {
     id: string
     title: string
     isDone: boolean
 }
-type TasksStateType = {
+export type TasksStateType = {
     [key: string]: {
         data: TasksType[]
         filter: FilterValuesType
@@ -22,7 +22,6 @@ type TasksStateType = {
 
 function App() {
 
-    console.log('dsds')
     let todolistId1 = v1();
     let todolistId2 = v1();
 
@@ -48,11 +47,9 @@ function App() {
         }
     });
 
-
     const removeTodolist = (todolistId: string) => {
 
     }
-
 
     function removeTask(todolistId: string, taskId: string) {
     }
@@ -65,18 +62,18 @@ function App() {
 
     }
 
-    function changeFilter(todolistId: string, value: FilterValuesType) {
+    function changeFilter(todolistId: string, filter: FilterValuesType) {
     }
 
     return (
         <div className="App">
             {todolists.map((el) => {
-                let tasksForTodolist = tasks[el.id];
-                if (el.filter === "active") {
-                    tasksForTodolist = tasks[el.id].filter(t => t.isDone === false);
+                let tasksForTodolist = tasks[el.id].data;
+                if (tasks[el.id].filter === "active") {
+                    tasksForTodolist = tasks[el.id].data.filter(t => t.isDone === false);
                 }
-                if (el.filter === "completed") {
-                    tasksForTodolist = tasks[el.id].filter(t => t.isDone === true);
+                if (tasks[el.id].filter === "completed") {
+                    tasksForTodolist = tasks[el.id].data.filter(t => t.isDone === true);
                 }
                 return (
                     <Todolist
@@ -88,7 +85,7 @@ function App() {
                         changeFilter={changeFilter}
                         addTask={addTask}
                         changeTaskStatus={changeStatus}
-                        filter={el.filter}
+                        filter={tasks[el.id].filter}
                         removeTodolist={removeTodolist}
                     />
                 )
