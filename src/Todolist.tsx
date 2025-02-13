@@ -1,5 +1,5 @@
 import {ChangeEvent} from 'react';
-import {FilterValuesType, TasksType} from "@/App.tsx";
+import {FilterValuesType, TasksType} from "@/app/App.tsx";
 import {EditableSpan} from "@/EditableSpan.tsx";
 import {CreateItemForm} from "@/CreateItemForm.tsx";
 
@@ -37,11 +37,9 @@ export function Todolist(props: PropsType) {
         <h3>
             <EditableSpan title={props.title} callback={changeTodolistTitleHandler}/>
             <button onClick={removeTodolistHandler}>X</button>
-
         </h3>
         <div>
             <CreateItemForm createItem={createTaskItemHandler}/>
-
         </div>
         <ul>
             {props.tasks.length === 0 ? 'have no massages'
