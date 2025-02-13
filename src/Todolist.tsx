@@ -1,7 +1,9 @@
 import {ChangeEvent} from 'react';
-import {FilterValuesType, TasksType} from "@/app/App.tsx";
+
 import {EditableSpan} from "@/EditableSpan.tsx";
 import {CreateItemForm} from "@/CreateItemForm.tsx";
+import {TasksType} from "@/model/tasks-reducer.ts";
+import {FilterValuesType} from "@/model/todolists-reducer.ts";
 
 type PropsType = {
     todolistId: string

@@ -1,28 +1,17 @@
-import {useState} from 'react';
 // @ts-ignore
 import './App.css';
 import {Todolist} from '../Todolist.tsx';
-import {v1} from 'uuid';
 import {CreateItemForm} from "@/CreateItemForm.tsx";
 import {useAppDispatch} from "@/common/hooks/useAppDispatch.ts";
 import {useAppSelector} from "@/common/hooks/useAppSelector.ts";
 import {tasksSelect} from "@/model/tasks-selectors.ts";
 import {todolistsSelect} from "@/model/todolists-selectors.ts";
+import {removeTaskAC, TasksType} from "@/model/tasks-reducer.ts";
+import {createTodolistAC, TodolistsType} from "@/model/todolists-reducer.ts";
 
-export type FilterValuesType = "All" | "Active" | "Completed";
-export type TodolistsType = {
-    id: string
-    title: string
-    filter: FilterValuesType
-}
-export type TasksType = {
-    id: string
-    title: string
-    isDone: boolean
-}
-export type TasksStateType = {
-    [key: string]: TasksType[]
-}
+
+
+
 
 function App() {
 
@@ -58,12 +47,9 @@ function App() {
         // setTasks({...tasks})
     }
     function addTodolist (title: string) {
-        // let newTodolistId = v1();
-        // const newTodolist : TodolistsType = {id: newTodolistId, title, filter: 'All'}
-        // setTodoLists([newTodolist, ...todoLists])
-        // setTasks({...tasks, [newTodolistId]: []})
+        dispatch(createTodolistAC(title))
     }
-    function changeFilter(payload: {todolistId: string, filter: FilterValuesType}) {
+    function changeFilter(payload: {todolistId: string, filter: string}) {
         // setTodoLists(todoLists.map(el => el.id === payload.todolistId ? {...el, filter: payload.filter} : el))
     }
     function changeTodolistTitle  (payload :{title: string, todolistId: string})  {
@@ -71,10 +57,7 @@ function App() {
     }
 
     function removeTask(payload: { todolistId: string, taskId: string }) {
-        // setTasks({
-        //     ...tasks,
-        //     [payload.todolistId]: tasks[payload.todolistId].filter(el => el.id !== payload.taskId)
-        // })
+        dispatch(removeTaskAC( payload.todolistId, payload.taskId ))
     }
     function addTask(payload: { todolistId: string, title: string }) {
         // const newItem = {id: v1(), title: payload.title, isDone: false}
@@ -99,8 +82,8 @@ function App() {
                 <CreateItemForm createItem={addTodolist}/>
             </div>
 
-            {todoLists.map((el) => {
-                let tasksForTodolist = tasks[el.id];
+            {todolists.map((el: TodolistsType) => {
+                let tasksForTodolist: TasksType = tasks[el.id];
                 if (el.filter === "Active") {
                     tasksForTodolist = tasks[el.id].filter(t => t.isDone === false);
                 }
