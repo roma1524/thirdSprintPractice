@@ -6,12 +6,14 @@ import {useAppDispatch} from "@/common/hooks/useAppDispatch.ts";
 import {useAppSelector} from "@/common/hooks/useAppSelector.ts";
 import {tasksSelect} from "@/model/tasks-selectors.ts";
 import {todolistsSelect} from "@/model/todolists-selectors.ts";
-import {removeTaskAC, TasksType} from "@/model/tasks-reducer.ts";
-import {createTodolistAC, TodolistsType} from "@/model/todolists-reducer.ts";
-
-
-
-
+import {addTaskAC, changeStatusAC, changeTaskTitleAC, removeTaskAC, TasksType} from "@/model/tasks-reducer.ts";
+import {
+    changeFilterAC, changeTodolistTitleAC,
+    createTodolistAC,
+    FilterValuesType,
+    removeTodolistAC,
+    TodolistsType
+} from "@/model/todolists-reducer.ts";
 
 function App() {
 
@@ -20,60 +22,31 @@ function App() {
 
     const dispatch = useAppDispatch()
 
-    // let todolistId1 = v1();
-    // let todolistId2 = v1();
-    //
-    // const [todoLists, setTodoLists] = useState<TodolistsType[]>([
-    //     {id: todolistId1, title: 'What to learn', filter: 'All'},
-    //     {id: todolistId2, title: 'What to buy', filter: 'All'}
-    // ]);
-    // const [tasks, setTasks] = useState<TasksStateType>({
-    //     [todolistId1]: [
-    //         {id: v1(), title: 'CSS', isDone: false},
-    //         {id: v1(), title: 'JS', isDone: true},
-    //         {id: v1(), title: 'React', isDone: false},
-    //         {id: v1(), title: 'Redux', isDone: false}
-    //     ],
-    //     [todolistId2]: [
-    //         {id: v1(), title: 'Milk', isDone: false},
-    //         {id: v1(), title: 'Beer', isDone: false},
-    //         {id: v1(), title: 'Onion', isDone: false}
-    //     ],
-    // })
-
-    const removeTodolist = (payload: { todolistId: string }) => {
-        // setTodoLists(todoLists.filter(el => el.id !== payload.todolistId))
-        // delete tasks[payload.todolistId]
-        // setTasks({...tasks})
+    const removeTodolist = (todolistId: string) => {
+        dispatch(removeTodolistAC({todolistId: todolistId}))
     }
     function addTodolist (title: string) {
         dispatch(createTodolistAC(title))
     }
-    function changeFilter(payload: {todolistId: string, filter: string}) {
-        // setTodoLists(todoLists.map(el => el.id === payload.todolistId ? {...el, filter: payload.filter} : el))
+    function changeFilter(payload: {todolistId: string, filter: FilterValuesType}) {
+      dispatch(changeFilterAC({todolistId: payload.todolistId, filter: payload.filter}))
     }
     function changeTodolistTitle  (payload :{title: string, todolistId: string})  {
-        // setTodoLists(todoLists.map(el => el.id === payload.todolistId ? {...el, title: payload.title} : el))
+        dispatch(changeTodolistTitleAC({todolistId: payload.todolistId, title: payload.title}))
     }
 
     function removeTask(payload: { todolistId: string, taskId: string }) {
-        dispatch(removeTaskAC( payload.todolistId, payload.taskId ))
+        dispatch(removeTaskAC({todolistId: payload.todolistId, taskId: payload.taskId}))
     }
     function addTask(payload: { todolistId: string, title: string }) {
-        // const newItem = {id: v1(), title: payload.title, isDone: false}
-        //
-        // setTasks({
-        //     ...tasks,
-        //     [payload.todolistId]: [...tasks[payload.todolistId], newItem]
-        // })
+        dispatch(addTaskAC({todolistId: payload.todolistId, title: payload.title}))
     }
     function changeStatus(payload: { todolistId: string, taskId: string, newIsDone: boolean }) {
-        // setTasks({...tasks, [payload.todolistId]: tasks[payload.todolistId].map(el => el.id === payload.taskId ? {...el, isDone: payload.newIsDone} : el)})
+        dispatch(changeStatusAC({todolistId: payload.todolistId, taskId: payload.taskId, newIsDone: payload.newIsDone}))
     }
     function changeTaskTitle  (payload :{todolistId: string, title: string, taskId: string})  {
-        // setTasks({...tasks,  [payload.todolistId]: tasks[payload.todolistId].map(el => el.id === payload.taskId ? {...el, title: payload.title} : el)})
+        dispatch(changeTaskTitleAC({todolistId: payload.todolistId, taskId: payload.taskId, title: payload.title}))
     }
-
 
     return (
         <div className="App">
