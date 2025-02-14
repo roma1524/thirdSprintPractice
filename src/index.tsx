@@ -1,6 +1,6 @@
 // @ts-ignore
 import './index.css';
-import App from './app/App.tsx';
+import App from './App.tsx';
 import * as serviceWorker from './serviceWorker';
 import {createRoot} from 'react-dom/client';
 import {Provider} from "react-redux";
