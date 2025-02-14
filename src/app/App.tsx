@@ -1,7 +1,7 @@
 // @ts-ignore
 import './App.css';
-import {Header} from "@/Header.tsx";
-import {Main} from "@/Main.tsx";
+import {Header} from "@/common/components/Header/Header.tsx";
+import {Main} from "@/app/Main.tsx";
 
 function App() {
 
